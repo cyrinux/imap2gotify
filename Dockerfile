@@ -8,8 +8,7 @@ RUN pip install requests
 
 WORKDIR /app
 
-ADD imaplib_connect.py /app
-ADD imap2gotify.py /app
+ADD imap.py gotify.py imap2gotify.py /app/
 
 VOLUME /app/config
 
