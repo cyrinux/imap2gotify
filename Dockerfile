@@ -2,9 +2,9 @@ FROM python:3.8-alpine
 
 RUN mkdir -p /app
 
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-
-RUN pip install requests toml
+RUN apk update && apk add ca-certificates \
+    && rm -rf /var/cache/apk/* \
+    && pip install requests toml
 
 WORKDIR /app
 
