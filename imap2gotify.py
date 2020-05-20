@@ -55,30 +55,25 @@ def main_loop(verbose=False):
         # set priority based on rules
         for r in config["rules"]:
             rule = config["rules"][r]
+            match = False
 
             if all(k in rule for k in ("from", "subject")):
                 if rule["from"] in mail["from"]:
                     if rule["subject"] in mail["subject"]:
-                        if verbose:
-                            print(f">>> rule match: {rule}")
-                        mail["priority"] = rule["priority"]
-                        if "token" in rule:
-                            mail["token"] = rule["token"]
+                        match = True
 
             elif any(k in rule for k in ("from", "subject")):
                 if "subject" in rule and rule["subject"] in mail["subject"]:
-                    if verbose:
-                        print(f">>> rule match: {rule}")
-                    mail["priority"] = rule["priority"]
-                    if "token" in rule:
-                        mail["token"] = rule["token"]
+                    match = True
 
                 elif "from" in rule and rule["from"] in mail["from"]:
+                    match = True
+
+                if match:
                     if verbose:
                         print(f">>> rule match: {rule}")
                     mail["priority"] = rule["priority"]
-                    if "token" in rule:
-                        mail["token"] = rule["token"]
+                    mail["token"] = rule["token"]
 
         print(
             f">>> Mail processed, from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
