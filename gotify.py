@@ -19,9 +19,15 @@ def push(mail, verbose=False):
         "title": mail["subject"],
         "message": mail["body"],
         "priority": mail["priority"],
+        "extras": mail["extras"],
     }
 
-    r = requests.post(f"{gotify_server}/message?token={gotify_token}", params=params)
+    if verbose:
+        import pprint
+
+        pprint.pprint(params)
+
+    r = requests.post(f"{gotify_server}/message?token={gotify_token}", json=params)
 
     if r.status_code != 200:
         if verbose:

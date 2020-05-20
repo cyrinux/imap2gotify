@@ -24,7 +24,7 @@ def open_connection(verbose=False):
     return connection
 
 
-def idle_mail(process_mails):
+def idle_mail(process):
     config = toml.load([os.path.abspath("config/settings.toml")])
     imaplib.Debug = config["imap"]["loglevel"] or 1
     c = open_connection()
@@ -40,7 +40,7 @@ def idle_mail(process_mails):
                 break
             if line.endswith("EXISTS"):
                 print(">>> NEW MAIL ARRIVED!")
-                process_mails()
+                process()
     finally:
         try:
             print(">>> closing...")

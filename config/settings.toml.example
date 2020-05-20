@@ -13,13 +13,17 @@ token = "MySuperToken"
    from = "aaa@bbb.ccc"
    subject = "CRITICAL"
    priority = 10
+   [rules.duty.extras.'android::action'.onReceive]
+     intentUrl = "https://monitor.example.com"
+   [rules.duty.extras.'client::notification'.click]
+     url = "https://gotify.net"
 
  [rules.dutytest]
-   subject = "CRITICAL"
-   priority = 8
+   subject = "WARNING"
+   priority = 7
 
  [rules.urlwatch]
    subject = "[urlwatch]"
-   priority = 10
+   priority = 3
    token = "MyOtherToken"
 

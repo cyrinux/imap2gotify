@@ -31,8 +31,41 @@ def get_subject(msg):
         return msg.get("subject")
 
 
-def main_loop(verbose=False):
+def process_rules(mail, verbose=False):
     config = toml.load([os.path.abspath("config/settings.toml")])
+    for r in config["rules"]:
+        rule = config["rules"][r]
+        match = False
+
+        if all(k in rule for k in ("from", "subject")):
+            if rule["from"] in mail["from"]:
+                if rule["subject"] in mail["subject"]:
+                    match = True
+
+        elif any(k in rule for k in ("from", "subject")):
+            if "subject" in rule and rule["subject"] in mail["subject"]:
+                match = True
+
+            elif "from" in rule and rule["from"] in mail["from"]:
+                match = True
+
+        if match:
+            mail["priority"] = rule["priority"]
+            mail["token"] = rule["token"]
+
+            if "extras" in rule:
+                print(rule["extras"])
+                mail["extras"] = rule["extras"]
+
+            if verbose:
+                print(
+                    f">>> Mail processed, from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
+                )
+
+            return mail
+
+
+def main_loop(verbose=False):
     c = imap.open_connection()
     c.select("INBOX")
 
@@ -52,32 +85,7 @@ def main_loop(verbose=False):
             "subject": get_subject(msg),
         }
 
-        # set priority based on rules
-        for r in config["rules"]:
-            rule = config["rules"][r]
-            match = False
-
-            if all(k in rule for k in ("from", "subject")):
-                if rule["from"] in mail["from"]:
-                    if rule["subject"] in mail["subject"]:
-                        match = True
-
-            elif any(k in rule for k in ("from", "subject")):
-                if "subject" in rule and rule["subject"] in mail["subject"]:
-                    match = True
-
-                elif "from" in rule and rule["from"] in mail["from"]:
-                    match = True
-
-            if match:
-                if verbose:
-                    print(f">>> rule match: {rule}")
-                mail["priority"] = rule["priority"]
-                mail["token"] = rule["token"]
-
-        print(
-            f">>> Mail processed, from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
-        )
+        mail = process_rules(mail, verbose)
 
         # send notication
         r = gotify.push(mail)
