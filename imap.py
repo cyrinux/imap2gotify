@@ -7,7 +7,7 @@ import toml
 
 def open_connection(verbose=False):
     config = toml.load([os.path.abspath("config/settings.toml")])
-    imaplib.Debug = config["imap"]["loglevel"] or 1
+    imaplib.Debug = config["imap"]["loglevel"] or 0
 
     # Connect to the server
     hostname = config["imap"]["hostname"]
@@ -26,7 +26,7 @@ def open_connection(verbose=False):
 
 def idle_mail(process):
     config = toml.load([os.path.abspath("config/settings.toml")])
-    imaplib.Debug = config["imap"]["loglevel"] or 1
+    imaplib.Debug = config["imap"]["loglevel"] or 0
     c = open_connection()
     try:
         c.select("INBOX", readonly=True)
@@ -41,6 +41,7 @@ def idle_mail(process):
             if line.endswith("EXISTS"):
                 print(">>> NEW MAIL ARRIVED!")
                 process()
+
     finally:
         try:
             print(">>> closing...")
@@ -51,7 +52,7 @@ def idle_mail(process):
 
 
 if __name__ == "__main__":
-    c = open_connection(verbose=True)
+    c = open_connection(verbose=False)
     try:
         print(c)
     finally:

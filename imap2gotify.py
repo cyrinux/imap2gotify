@@ -51,7 +51,11 @@ def process_rules(mail, verbose=False):
 
         if match:
             mail["priority"] = rule["priority"]
-            mail["token"] = rule["token"]
+
+            if "token" in rule:
+                if verbose:
+                    print(rule["token"])
+                mail["token"] = rule["token"]
 
             if "extras" in rule:
                 if verbose:
@@ -85,13 +89,17 @@ def main_loop(verbose=False):
             "subject": get_subject(msg),
         }
 
-        mail = process_rules(mail, verbose)
+        mail_keep = process_rules(mail, verbose)
 
         # send notication
-        r = gotify.push(mail)
-        if r:
-            # mark as read
+        if mail_keep:
+            r = gotify.push(mail_keep)
+            if r:
+                # mark as read
+                c.store(num, "+FLAGS", "(\\Seen)")
+        else:
             c.store(num, "+FLAGS", "(\\Seen)")
+            print(f"ignoring {mail}")
 
 
 if __name__ == "__main__":
