@@ -3,6 +3,7 @@ version: "3.7"
 services:
   imap2gotify:
     build: .
+    image: cyrinux/imap2gotify
     environment:
       - TZ=Europe/Paris
     restart: always
