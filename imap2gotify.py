@@ -69,11 +69,11 @@ def main_loop(verbose=False):
                 elif "from" in rule and rule["from"] in mail["from"]:
                     match = True
 
-                if match:
-                    if verbose:
-                        print(f">>> rule match: {rule}")
-                    mail["priority"] = rule["priority"]
-                    mail["token"] = rule["token"]
+            if match:
+                if verbose:
+                    print(f">>> rule match: {rule}")
+                mail["priority"] = rule["priority"]
+                mail["token"] = rule["token"]
 
         print(
             f">>> Mail processed, from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
