@@ -1,32 +1,32 @@
 # -*- coding: utf8 -*-
 
 import imaplib
-import configparser
 import os
+import toml
 
 
 def open_connection(verbose=False):
-    # Read the config file
-    config = configparser.ConfigParser()
-    config.read([os.path.abspath("config/settings.ini")])
+    config = toml.load([os.path.abspath("config/settings.toml")])
+    imaplib.Debug = config["imap"]["loglevel"] or 1
 
     # Connect to the server
-    hostname = config.get("imap", "hostname")
+    hostname = config["imap"]["hostname"]
     if verbose:
         print(f"Connecting to {hostname}")
     connection = imaplib.IMAP4_SSL(hostname)
 
     # Login to our account
-    username = config.get("imap", "username")
-    password = config.get("imap", "password")
+    username = config["imap"]["username"]
+    password = config["imap"]["password"]
     if verbose:
         print(f"Logging in as {username}")
     connection.login(username, password)
     return connection
 
 
-def idle_mail(action):
-    # imaplib.Debug = 4
+def idle_mail(process_mails):
+    config = toml.load([os.path.abspath("config/settings.toml")])
+    imaplib.Debug = config["imap"]["loglevel"] or 1
     c = open_connection()
     try:
         c.select("INBOX", readonly=True)
@@ -40,7 +40,7 @@ def idle_mail(action):
                 break
             if line.endswith("EXISTS"):
                 print(">>> NEW MAIL ARRIVED!")
-                action()
+                process_mails()
     finally:
         try:
             print(">>> closing...")

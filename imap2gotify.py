@@ -1,46 +1,81 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
-import imap
-import gotify
 import email
-import email.parser
 import email.message
+import email.parser
+import gotify
+import imap
+import os
+import toml
+from email.header import decode_header
 
 
-def get_text(msg):
+def get_body(msg):
     if msg.is_multipart():
-        return get_text(msg.get_payload(0))
+        body = get_body(msg.get_payload(0))
+        try:
+            body = body.decode("latin-1").encode("utf8")
+        except:
+            pass
+        return body
     else:
         return msg.get_payload(None, True)
 
 
-def main_loop():
+def get_subject(msg):
+    try:
+        h = decode_header(msg.get("subject"))
+        return h[0][0].decode("latin-1").encode("utf8")
+    except:
+        return msg.get("subject")
+
+
+def main_loop(verbose=False):
+    config = toml.load([os.path.abspath("config/settings.toml")])
     c = imap.open_connection()
     c.select("INBOX")
 
     # fetch unseen
     _, data = c.search(None, "UnSeen")
-
     print(">>> MAIN LOOP")
 
     # read each new mail and send alert
     for num in data[0].split():
         _, data = c.fetch(num, "(RFC822)")
         msg = email.message_from_bytes(data[0][1])
+
         mail = {
-            "subject": msg.get("subject"),
+            "body": get_body(msg),
             "from": msg.get("from"),
-            "body": get_text(msg),
+            "priority": 1,
+            "subject": get_subject(msg),
         }
-        # TODO: better priority management
-        mail["priority"] = 1
-        if "dailymotion.com" in mail["from"]:
-            if "CRITICAL" in mail["subject"]:
-                mail["priority"] = 10
+
+        # set priority based on rules
+        for r in config["rules"]:
+            rule = config["rules"][r]
+
+            if all(k in rule for k in ("from", "subject")):
+                if rule["from"] in mail["from"]:
+                    if rule["subject"] in mail["subject"]:
+                        if verbose:
+                            print(f">>> rule match: {rule}")
+                        mail["priority"] = rule["priority"]
+
+            elif any(k in rule for k in ("from", "subject")):
+                if "subject" in rule and rule["subject"] in mail["subject"]:
+                    if verbose:
+                        print(f">>> rule match: {rule}")
+                    mail["priority"] = rule["priority"]
+
+                elif "from" in rule and rule["from"] in mail["from"]:
+                    if verbose:
+                        print(f">>> rule match: {rule}")
+                    mail["priority"] = rule["priority"]
 
         print(
-            f"from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
+            f">>> Mail processed, from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
         )
 
         # send notication

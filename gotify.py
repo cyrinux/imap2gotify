@@ -1,24 +1,30 @@
-import configparser
+# -*- coding: utf8 -*-
+
 import os
 import requests
+import toml
 
 
-def push(*params, verbose=False):
-    config = configparser.ConfigParser()
-    config.read([os.path.abspath("config/settings.ini")])
+def push(mail, verbose=False):
+    config = toml.load([os.path.abspath("config/settings.toml")])
 
     # Connect to the server
-    gotify_server = config.get("gotify", "host")
-    gotify_token = config.get("gotify", "token")
+    gotify_server = config["gotify"]["host"]
+    gotify_token = config["gotify"]["token"]
 
     params = {
-        "title": params.title,
-        "message": params.message,
-        "priority": params.priority,
+        "title": mail["subject"],
+        "message": mail["body"],
+        "priority": mail["priority"],
     }
+
     r = requests.post(f"{gotify_server}/message?token={gotify_token}", params=params)
+
     if r.status_code != 200:
-        print("Can't send push notification")
+        if verbose:
+            print("Can't send push notification")
         return False
-    print(f">>>> Gotify for email: {params.title} with priority {params.priority}")
+    print(
+        f">>>> Gotify for email: {params['title']} with priority {params['priority']}"
+    )
     return True

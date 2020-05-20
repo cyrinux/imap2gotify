@@ -1,0 +1,24 @@
+[imap]
+hostname = "mail.example.com"
+username = "push@example.com"
+password = "MyStr0ngPassword"
+loglevel = 1
+
+[gotify]
+host = "https://gotify.example.com"
+token = "MySuperToken"
+
+[rules]
+ [rules.duty]
+   from = "aaa@bbb.ccc"
+   subject = "CRITICAL"
+   priority = 10
+
+ [rules.dutytest]
+   subject = "CRITICAL"
+   priority = 8
+
+ [rules.urlwatch]
+   subject = "[urlwatch]"
+   priority = 10
+
