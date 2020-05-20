@@ -74,6 +74,9 @@ def main_loop(verbose=False):
                         print(f">>> rule match: {rule}")
                     mail["priority"] = rule["priority"]
 
+            if "token" in rule:
+                mail["token"] = rule["token"]
+
         print(
             f">>> Mail processed, from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
         )

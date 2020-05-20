@@ -10,7 +10,10 @@ def push(mail, verbose=False):
 
     # Connect to the server
     gotify_server = config["gotify"]["host"]
-    gotify_token = config["gotify"]["token"]
+    if "token" in mail:
+        gotify_token = mail["token"]
+    else:
+        gotify_token = config["gotify"]["token"]
 
     params = {
         "title": mail["subject"],
