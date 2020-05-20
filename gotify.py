@@ -8,7 +8,6 @@ import toml
 def push(mail, verbose=False):
     config = toml.load([os.path.abspath("config/settings.toml")])
 
-    # Connect to the server
     gotify_server = config["gotify"]["host"]
     if "token" in mail:
         gotify_token = mail["token"]
@@ -19,21 +18,19 @@ def push(mail, verbose=False):
         "title": mail["subject"],
         "message": mail["body"],
         "priority": mail["priority"],
-        "extras": mail["extras"],
     }
 
+    if "extras" in mail:
+        params["extras"] = mail["extras"]
+
     if verbose:
-        import pprint
+        print(params)
 
-        pprint.pprint(params)
+    push = requests.post(f"{gotify_server}/message?token={gotify_token}", json=params)
 
-    r = requests.post(f"{gotify_server}/message?token={gotify_token}", json=params)
-
-    if r.status_code != 200:
-        if verbose:
-            print("Can't send push notification")
+    if push.status_code != 200:
         return False
+
     print(
         f">>>> Gotify for email: {params['title']} with priority {params['priority']}"
     )
-    return True

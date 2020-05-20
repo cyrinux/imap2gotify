@@ -54,13 +54,13 @@ def process_rules(mail, verbose=False):
             mail["token"] = rule["token"]
 
             if "extras" in rule:
-                print(rule["extras"])
+                if verbose:
+                    print(rule["extras"])
                 mail["extras"] = rule["extras"]
 
-            if verbose:
-                print(
-                    f">>> Mail processed, from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
-                )
+            print(
+                f">>> Mail processed, from: {mail['from']}, subject: {mail['subject']}, priority: {mail['priority']}"
+            )
 
             return mail
 
