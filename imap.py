@@ -25,10 +25,35 @@ def open_connection(verbose=False):
     return connection
 
 
+def idle_mail(action):
+    # imaplib.Debug = 4
+    c = open_connection()
+    try:
+        c.select("INBOX", readonly=True)
+        idle = "{} IDLE\r\n".format(c._new_tag().decode())
+        c.send(idle.encode())
+        print(">>> waiting for new mail on mailbox...")
+        while True:
+            line = c.readline().decode().strip()
+            if line.startswith("* BYE ") or (len(line) == 0):
+                print(">>> leaving...")
+                break
+            if line.endswith("EXISTS"):
+                print(">>> NEW MAIL ARRIVED!")
+                action()
+    finally:
+        try:
+            print(">>> closing...")
+            c.close()
+        except:
+            pass
+        c.logout()
+
+
 if __name__ == "__main__":
     c = open_connection(verbose=True)
     try:
         print(c)
     finally:
         c.logout()
-        print("logged out")
+        print(">>>> logged out")
