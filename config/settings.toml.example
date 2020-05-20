@@ -21,4 +21,5 @@ token = "MySuperToken"
  [rules.urlwatch]
    subject = "[urlwatch]"
    priority = 10
+   token = "MyOtherToken"
 
