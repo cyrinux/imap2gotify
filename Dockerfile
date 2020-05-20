@@ -4,7 +4,7 @@ RUN mkdir -p /app
 
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
-RUN pip install requests
+RUN pip install requests toml
 
 WORKDIR /app
 
