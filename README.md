@@ -17,3 +17,9 @@ or
 ```bash
 docker-compose up -d --build
 ```
+
+# Configuration
+
+- Check example in `config` directory.
+
+- "extras" parameters can be found [here](https://gotify.net/docs/msgextras)
