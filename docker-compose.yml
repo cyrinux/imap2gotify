@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  imap2gotify:
+    build: .
+    environment:
+      - TZ=Europe/Paris
+    restart: always
+    volumes:
+      - ./config:/app/config
