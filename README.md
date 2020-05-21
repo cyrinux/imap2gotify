@@ -1,4 +1,6 @@
-# email IMAP Idle proxy gateway to [Gotify](https://gotify.net) [![](https://images.microbadger.com/badges/version/cyrinux/imap2gotify.svg)](https://microbadger.com/images/cyrinux/imap2gotify "Get your own version badge on microbadger.com")
+# email IMAP Idle proxy gateway to [Gotify](https://gotify.net)
+
+[![Build Status](https://travis-ci.org/cyrinux/imap2gotify.svg?branch=master)](https://travis-ci.org/cyrinux/imap2gotify)
 
 This application wait for new messages in an IMAP server, then push them on Gotify.
 
