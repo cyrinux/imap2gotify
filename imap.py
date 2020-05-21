@@ -27,20 +27,27 @@ def open_connection(verbose=False):
 def idle_mail(process):
     config = toml.load([os.path.abspath("config/settings.toml")])
     imaplib.Debug = config["imap"]["loglevel"] or 0
-    c = open_connection()
+    verbose = config["main"]["verbose"] or False
+    folder = config["imap"]["folder"] or "INBOX"
+
+    c = open_connection(verbose=verbose)
     try:
-        c.select("INBOX", readonly=True)
+        c.select(folder, readonly=True)
         idle = "{} IDLE\r\n".format(c._new_tag().decode())
         c.send(idle.encode())
-        print(">>> waiting for new mail on mailbox...")
+        print(f">>> waiting for new mail on mailbox folder {folder}...")
         while True:
             line = c.readline().decode().strip()
             if line.startswith("* BYE ") or (len(line) == 0):
                 print(">>> leaving...")
                 break
             if line.endswith("EXISTS"):
-                print(">>> NEW MAIL ARRIVED!")
-                process()
+                if verbose:
+                    print(">>> NEW MAIL ARRIVED!")
+                try:
+                    process()
+                except Exception as e:
+                    print(e)
 
     finally:
         try:
@@ -52,7 +59,9 @@ def idle_mail(process):
 
 
 if __name__ == "__main__":
-    c = open_connection(verbose=False)
+    config = toml.load([os.path.abspath("config/settings.toml")])
+    verbose = config["main"]["verbose"] or False
+    c = open_connection(verbose=verbose)
     try:
         print(c)
     finally:

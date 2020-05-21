@@ -1,12 +1,17 @@
+[main]
+verbose = false
+
+[gotify]
+host = "https://gotify.example.com"
+token = "MySuperToken"
+
 [imap]
 hostname = "mail.example.com"
 username = "push@example.com"
 password = "MyStr0ngPassword"
 loglevel = 1
+folder = "INBOX"
 
-[gotify]
-host = "https://gotify.example.com"
-token = "MySuperToken"
 
 [rules]
  [rules.duty]

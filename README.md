@@ -1,10 +1,6 @@
 # email IMAP Idle proxy gateway to [Gotify](https://gotify.net)
 
-# Build
-
-```bash
-docker build -t cyrinux/imap2gotify .
-```
+This application wait for new messages in an IMAP server, then push them on Gotify.
 
 # Run
 
@@ -18,8 +14,16 @@ or
 docker-compose up -d --build
 ```
 
+or
+
+# Build
+
+```bash
+docker build -t cyrinux/imap2gotify .
+```
+
 # Configuration
 
-- Check example in `config` directory.
+- Check `settings.toml.example` example in `config` directory.
 
 - "extras" parameters can be found [here](https://gotify.net/docs/msgextras)

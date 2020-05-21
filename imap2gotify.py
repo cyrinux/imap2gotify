@@ -69,9 +69,14 @@ def process_rules(mail, verbose=False):
             return mail
 
 
-def main_loop(verbose=False):
-    c = imap.open_connection()
-    c.select("INBOX")
+def main_loop():
+    config = toml.load([os.path.abspath("config/settings.toml")])
+    folder = config["imap"]["folder"] or "INBOX"
+    verbose = config["main"]["verbose"]
+
+    c = imap.open_connection(config)
+
+    c.select(folder, readonly=False)
 
     # fetch unseen
     _, data = c.search(None, "UnSeen")
@@ -89,11 +94,11 @@ def main_loop(verbose=False):
             "subject": get_subject(msg),
         }
 
-        mail_keep = process_rules(mail, verbose)
+        mail_keep = process_rules(mail, verbose=verbose)
 
         # send notication
         if mail_keep:
-            r = gotify.push(mail_keep)
+            r = gotify.push(mail_keep, verbose=verbose)
             if r:
                 # mark as read
                 c.store(num, "+FLAGS", "(\\Seen)")
