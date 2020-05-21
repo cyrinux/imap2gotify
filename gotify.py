@@ -6,7 +6,7 @@ import toml
 import simplejson as json
 
 
-class gotify:
+class Gotify:
     def __init__(self):
         config = toml.load([os.path.abspath("config/settings.toml")])
         self.gotify_server = config["gotify"]["host"]
@@ -43,3 +43,7 @@ class gotify:
         )
 
         return True
+
+
+if __name__ == "__main__":
+    pass

@@ -4,8 +4,8 @@
 import email
 import email.message
 import email.parser
-from Gotify import gotify
-from Imap import imap as imap_connect
+from gotify import Gotify
+from imap import Imap
 import os
 import toml
 from email.header import decode_header
@@ -36,8 +36,8 @@ class Imap2Gotify:
         self.config = toml.load([os.path.abspath("config/settings.toml")])
         self.verbose = self.config["main"]["verbose"]
         self.folder = self.config["imap"]["folder"] or "INBOX"
-        self.imap = imap_connect()
-        self.gotify = gotify()
+        self.imap = Imap()
+        self.gotify = Gotify()
 
     def process_rules(self, mail):
         for r in self.config["rules"]:
@@ -111,6 +111,6 @@ class Imap2Gotify:
 
 
 if __name__ == "__main__":
-    imap = imap_connect()
+    imap = Imap()
     main = Imap2Gotify()
     imap.idle_mail(main.main_loop)

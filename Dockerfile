@@ -8,7 +8,7 @@ RUN apk update && apk add ca-certificates \
 
 WORKDIR /app
 
-ADD Imap.py Gotify.py imap2gotify.py /app/
+ADD imap.py gotify.py imap2gotify.py /app/
 
 VOLUME /app/config
 

@@ -5,7 +5,7 @@ import os
 import toml
 
 
-class imap:
+class Imap:
     def __init__(self):
         self.config = toml.load([os.path.abspath("config/settings.toml")])
         self.verbose = self.config["main"]["verbose"] or False
@@ -61,7 +61,7 @@ class imap:
 
 
 if __name__ == "__main__":
-    imap = imap()
+    imap = Imap()
     c = imap.open_connection()
     try:
         print(c)
