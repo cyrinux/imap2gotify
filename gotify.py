@@ -11,7 +11,10 @@ class Gotify:
         config = toml.load([os.path.abspath("config/settings.toml")])
         self.gotify_server = config["gotify"]["host"]
         self.gotify_token = config["gotify"]["token"]
-        self.verbose = config["main"]["verbose"]
+
+        self.verbose = False
+        if "verbose" in config["main"]:
+            self.verbose = config["main"]["verbose"]
 
     def push(self, mail):
 

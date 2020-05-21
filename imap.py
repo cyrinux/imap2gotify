@@ -8,12 +8,21 @@ import toml
 class Imap:
     def __init__(self):
         self.config = toml.load([os.path.abspath("config/settings.toml")])
-        self.verbose = self.config["main"]["verbose"] or False
         self.hostname = self.config["imap"]["hostname"]
         self.username = self.config["imap"]["username"]
         self.password = self.config["imap"]["password"]
-        self.folder = self.config["imap"]["folder"] or "INBOX"
-        self.loglevel = self.config["imap"]["loglevel"] or 0
+
+        self.verbose = False
+        if "verbose" in self.config["main"]:
+            self.verbose = self.config["main"]["verbose"]
+
+        self.folder = "INBOX"
+        if "folder" in self.config["imap"]:
+            self.folder = self.config["imap"]["folder"]
+
+        self.loglevel = 0
+        if "loglevel" in self.config["imap"]:
+            self.loglevel = self.config["imap"]["loglevel"] or 0
 
     def open_connection(self):
         imaplib.Debug = self.loglevel

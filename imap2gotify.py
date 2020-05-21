@@ -34,8 +34,9 @@ def get_subject(msg):
 class Imap2Gotify:
     def __init__(self):
         self.config = toml.load([os.path.abspath("config/settings.toml")])
-        self.verbose = self.config["main"]["verbose"]
-        self.folder = self.config["imap"]["folder"] or "INBOX"
+        self.verbose = False
+        if "verbose" in self.config["main"]:
+            self.verbose = self.config["main"]["verbose"]
         self.imap = Imap()
         self.gotify = Gotify()
 
@@ -57,7 +58,14 @@ class Imap2Gotify:
                     match = True
 
             if match:
-                mail["priority"] = rule["priority"]
+                if "priority" in rule:
+                    mail["priority"] = rule["priority"]
+                else:
+                    print(
+                        f">>> 'priority' params missing in the rule {r}, fallback to 1"
+                    )
+                    # TODO: check if flag exists or priority header in the mail
+                    mail["priority"] = 1
 
                 if "token" in rule:
                     if self.verbose:
@@ -79,7 +87,7 @@ class Imap2Gotify:
 
         c = self.imap.open_connection()
 
-        c.select(self.folder, readonly=False)
+        c.select(self.imap.folder, readonly=False)
 
         # fetch unseen
         _, data = c.search(None, "UnSeen")
