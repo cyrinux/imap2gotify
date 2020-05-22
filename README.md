@@ -4,7 +4,7 @@
 
 This application wait for new messages in an IMAP server, then push them on Gotify.
 
-# Run
+## Run
 
 ```
 docker run -ti -v "$(pwd)/config:/app/config" cyrinux/imap2gotify:latest
@@ -18,14 +18,18 @@ docker-compose up -d --build
 
 or
 
-# Build
+## Build
 
 ```bash
 docker build -t cyrinux/imap2gotify .
 ```
 
-# Configuration
+## Configuration
 
 - Check `settings.toml.example` example in `config` directory.
 
 - "extras" parameters can be found [here](https://gotify.net/docs/msgextras)
+
+# TODO
+
+- Add priority based on mail headers / flags
