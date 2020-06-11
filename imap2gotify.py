@@ -29,6 +29,7 @@ def get_body(msg):
 
 def mark_down_formatting(html_text):
     h = html2text.HTML2Text()
+    h.ignore_links = False
     return h.handle(html_text)
 
 
