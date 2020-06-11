@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
+
 import email
 import email.message
 import email.parser
+import os
+from email.header import decode_header
+
+import html2text
+import toml
+
 from gotify import Gotify
 from imap import Imap
-import os
-import toml
-from email.header import decode_header
 
 
 def get_body(msg):
@@ -21,6 +25,12 @@ def get_body(msg):
         return body
     else:
         return msg.get_payload(None, True)
+
+
+def mark_down_formatting(html_text, url):
+    h = html2text.HTML2Text()
+    md_text = h.handle(html_text)
+    return md_text
 
 
 def get_subject(msg):
@@ -99,7 +109,7 @@ class Imap2Gotify:
             msg = email.message_from_bytes(data[0][1])
 
             mail = {
-                "body": get_body(msg),
+                "body": html2text(get_body(msg)),
                 "from": msg.get("from"),
                 "priority": 1,
                 "subject": get_subject(msg),

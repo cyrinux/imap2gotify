@@ -1,9 +1,10 @@
 # -*- coding: utf8 -*-
 
 import os
+
 import requests
-import toml
 import simplejson as json
+import toml
 
 
 class Gotify:
