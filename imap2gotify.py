@@ -109,7 +109,7 @@ class Imap2Gotify:
             msg = email.message_from_bytes(data[0][1])
 
             mail = {
-                "body": html2text(get_body(msg)),
+                "body": mark_down_formatting(get_body(msg)),
                 "from": msg.get("from"),
                 "priority": 1,
                 "subject": get_subject(msg),
