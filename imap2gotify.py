@@ -27,7 +27,7 @@ def get_body(msg):
         return msg.get_payload(None, True)
 
 
-def mark_down_formatting(html_text, url):
+def mark_down_formatting(html_text):
     h = html2text.HTML2Text()
     md_text = h.handle(html_text)
     return md_text
