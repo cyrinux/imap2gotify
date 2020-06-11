@@ -29,8 +29,7 @@ def get_body(msg):
 
 def mark_down_formatting(html_text):
     h = html2text.HTML2Text()
-    md_text = h.handle(html_text)
-    return md_text
+    return h.handle(html2text)
 
 
 def get_subject(msg):
@@ -107,7 +106,7 @@ class Imap2Gotify:
         for num in data[0].split():
             _, data = c.fetch(num, "(RFC822)")
             msg = email.message_from_bytes(data[0][1])
-            body = mark_down_formatting(get_body(msg).encode())
+            body = mark_down_formatting(get_body(msg).decode())
 
             mail = {
                 "body": body,
