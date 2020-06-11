@@ -107,9 +107,10 @@ class Imap2Gotify:
         for num in data[0].split():
             _, data = c.fetch(num, "(RFC822)")
             msg = email.message_from_bytes(data[0][1])
+            body = mark_down_formatting(get_body(msg).encode())
 
             mail = {
-                "body": mark_down_formatting(get_body(msg)),
+                "body": body,
                 "from": msg.get("from"),
                 "priority": 1,
                 "subject": get_subject(msg),
