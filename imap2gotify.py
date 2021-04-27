@@ -6,7 +6,7 @@ import email
 import email.message
 import email.parser
 import os
-from email.header import decode_header
+from email.header import decode_header, make_header
 
 import html2text
 import toml
@@ -35,8 +35,7 @@ def mark_down_formatting(html_text):
 
 def get_subject(msg):
     try:
-        h = decode_header(msg.get("subject"))
-        return h[0][0].decode("latin-1").encode("utf8")
+        return str(make_header(decode_header(msg.get("subject"))))
     except:
         return msg.get("subject")
 
@@ -71,11 +70,7 @@ class Imap2Gotify:
                 if "priority" in rule:
                     mail["priority"] = rule["priority"]
                 else:
-                    print(
-                        f">>> 'priority' params missing in the rule {r}, fallback to 1"
-                    )
-                    # TODO: check if flag exists or priority header in the mail
-                    mail["priority"] = 1
+                    mail["priority"] = self.importance_to_priority(mail["importance"])
 
                 if "token" in rule:
                     if self.verbose:
@@ -92,6 +87,19 @@ class Imap2Gotify:
                 )
 
                 return mail
+
+    @staticmethod
+    def importance_to_priority(importance):
+        if importance is None:
+            return 1
+        elif importance.lower() == "high":
+            return 7
+        elif importance.lower() == "medium":
+            return 4
+        elif importance.lower() == "low":
+            return 3
+        else:
+            return 1
 
     def main_loop(self):
 
@@ -114,6 +122,7 @@ class Imap2Gotify:
                 "from": msg.get("from"),
                 "priority": 1,
                 "subject": get_subject(msg),
+                "importance": msg.get("importance")
             }
 
             mail_keep = self.process_rules(mail)

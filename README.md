@@ -28,8 +28,11 @@ docker build -t cyrinux/imap2gotify .
 
 - Check `settings.toml.example` example in `config` directory.
 
+- If no `priority` setting is specified for a rule, priority will be based on the
+  "importance" mail header, mapping as follows:
+    - High -> priority 7
+    - Medium -> priority 4
+    - Low -> priority 3
+    - priority 1 for all others
+
 - "extras" parameters can be found [here](https://gotify.net/docs/msgextras)
-
-# TODO
-
-- Add priority based on mail headers / flags
