@@ -1,4 +1,4 @@
-# email IMAP Idle proxy gateway to [Gotify](https://gotify.net)
+# A missing link between IMAP and [Gotify](https://gotify.net)
 
 [![](https://images.microbadger.com/badges/version/cyrinux/imap2gotify.svg)](https://microbadger.com/images/cyrinux/imap2gotify)
 [![ci](https://github.com/cyrinux/imap2gotify/actions/workflows/ci.yml/badge.svg)](https://github.com/cyrinux/imap2gotify/actions/workflows/ci.yml)
