@@ -122,7 +122,7 @@ class Imap2Gotify:
                 "from": msg.get("from"),
                 "priority": 1,
                 "subject": get_subject(msg),
-                "importance": msg.get("importance")
+                "importance": msg.get("importance"),
             }
 
             mail_keep = self.process_rules(mail)
