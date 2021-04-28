@@ -3,7 +3,7 @@
 [![](https://images.microbadger.com/badges/version/cyrinux/imap2gotify.svg)](https://microbadger.com/images/cyrinux/imap2gotify)
 [![ci](https://github.com/cyrinux/imap2gotify/actions/workflows/ci.yml/badge.svg)](https://github.com/cyrinux/imap2gotify/actions/workflows/ci.yml)
 
-This application wait for new messages in an IMAP server, then push them on Gotify.
+Get push notification via Gotify about new emails (using IMAP IDLE)
 
 ## Run
 
