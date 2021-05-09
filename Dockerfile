@@ -3,12 +3,15 @@ FROM python:3.9-alpine
 RUN mkdir -p /app
 
 RUN apk update && apk add ca-certificates \
-    && rm -rf /var/cache/apk/* \
-    && pip install requests toml simplejson html2text
+    && rm -rf /var/cache/apk/*
 
+# Run pip first for docker build caching
+COPY requirements.txt /app/requirements.txt
 WORKDIR /app
+RUN pip install -r requirements.txt
 
-ADD imap.py gotify.py imap2gotify.py /app/
+# Copy rest of the app
+COPY . /app
 
 VOLUME /app/config
 

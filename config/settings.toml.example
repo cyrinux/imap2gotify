@@ -1,5 +1,5 @@
 [main]
-verbose = false
+verbose = true  # Show debug information
 
 [gotify]
 host = "https://gotify.example.com"
@@ -9,8 +9,11 @@ token = "MySuperToken"
 hostname = "mail.example.com"
 username = "push@example.com"
 password = "MyStr0ngPassword"
-loglevel = 1
 folder = "INBOX"
+# Number of seconds to wait for IDLE notifications
+# Default is 5 minutes, IMAP RFC's states never more
+# than 29 minutes as a recommendation
+# timeout = 300  
 
 
 [rules]
