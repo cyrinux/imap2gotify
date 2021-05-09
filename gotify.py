@@ -51,7 +51,7 @@ class Gotify:
 
         if rule.token:
             self.logger.debug("Using rule override token: %s", rule.token)
-            token = rule["token"]
+            token = rule.token
         else:
             token = self.token
 
