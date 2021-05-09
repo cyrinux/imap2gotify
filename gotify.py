@@ -44,19 +44,19 @@ class Gotify:
 
     def _send_to_gotify(self,message,rule):
         if rule.priority:
-            logger.debug("Using rule override priority: %s", rule.priority)
+            self.logger.debug("Using rule override priority: %s", rule.priority)
             priority = rule.priority
         else:
             priority = Gotify._importance_to_priority(message.importance)
 
         if rule.token:
-            logger.debug("Using rule override token: %s", rule.token)
+            self.logger.debug("Using rule override token: %s", rule.token)
             token = rule["token"]
         else:
             token = self.token
 
         if rule.extras:
-            logger.debug("Rule extras: %s", rule.extras)
+            self.logger.debug("Rule extras: %s", rule.extras)
             extras = rule.extras
         else:
             extras = None
