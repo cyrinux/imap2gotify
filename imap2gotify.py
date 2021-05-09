@@ -1,23 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
+import logging
 import os
-import toml
+import sys
 from collections.abc import MutableMapping
+
+import toml
+
+from gotify import Gotify
 from imap import Imap
 from rules import RulesProcessor
-from gotify import Gotify
 
 
 class Imap2Gotify:
-    def __init__(self,config: MutableMapping):
-        """ Initialize our Imap2Gotify instance using toml config """
+    def __init__(self, config: MutableMapping):
+        """Initialize our Imap2Gotify instance using toml config"""
         self.config = config
 
     def run(self):
-        """ Process unread emails and then go into IDLE loop waiting for
+        """Process unread emails and then go into IDLE loop waiting for
         notification of new messages arriving, never to return except
-        upon KeyboardInterrupt """
+        upon KeyboardInterrupt"""
         while True:
             try:
                 client = Imap(self.config)
@@ -29,17 +33,20 @@ class Imap2Gotify:
                 # those messages that were succefully sent via gotify are
                 # then marked as read
                 new_messages = client.get_unread()
-                (matched_messages, not_matched_messages) = rules.check_matches(new_messages)
+                (matched_messages, not_matched_messages) = rules.check_matches(
+                    new_messages
+                )
                 client.mark_as_read(not_matched_messages)
                 if matched_messages:
                     gotify_sent_messages = gotify.send(matched_messages)
                     client.mark_as_read(gotify_sent_messages)
-                
+
                 # Go into idle waiting for new emails
                 client.wait_for_new()
 
             except KeyboardInterrupt:
                 break
+
 
 if __name__ == "__main__":
     try:
