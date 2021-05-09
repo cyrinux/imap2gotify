@@ -1,5 +1,11 @@
 FROM python:3.9-alpine
 
+# This prevents Python from writing out pyc files
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# This keeps Python from buffering stdin/stdout
+ENV PYTHONUNBUFFERED 1
+
 RUN mkdir -p /app
 
 RUN apk update && apk add ca-certificates \
