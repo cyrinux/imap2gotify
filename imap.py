@@ -3,12 +3,15 @@
 from collections import namedtuple
 from collections.abc import MutableMapping
 from email import message_from_bytes, policy
+from email.message import Message
 from email.header import decode_header, make_header
 
 from imapclient import IMAPClient
 from imapclient.exceptions import LoginError
 
 from helpers import get_logger
+
+import html2text
 
 EmailStruct = namedtuple(
     "EmailStruct", ["msgid", "from_", "subject", "body", "importance"]
@@ -58,6 +61,20 @@ class Imap:
 
             self._client = None
 
+    def _get_body_from_message(self, msg: Message) -> str:
+        """Best attempt at decoding the message body into a plain text version"""
+        # Plain-text version first if it exists
+        if msg.get_body(preferencelist=("plain")):
+            return msg.get_body(preferencelist=("plain")).get_content()
+        # Html version, try to convert to plain text
+        elif "html" in msg.get("content-type") and msg.get_body(preferencelist=("html")):
+            h = html2text.HTML2Text()
+            h.ignore_links = False
+            return h.handle(msg.get_body(preferencelist=("html")).get_content())
+        # All else has failed, try to return the payload
+        else:
+            return msg.get_payload()
+
     def _get_messages(self, msg_ids: list) -> list:
         """Returns EmailStruct named tuples from given list message id list"""
         emails = []
@@ -72,7 +89,7 @@ class Imap:
                         msgid=msgid,
                         from_=msg.get("from"),
                         subject=str(make_header(decode_header(msg.get("subject")))),
-                        body=msg.get_body(preferencelist=("plain")).get_content(),
+                        body=self._get_body_from_message(msg),
                         importance=msg.get("importance"),
                     )
                 )
