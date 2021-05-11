@@ -3,15 +3,14 @@
 from collections import namedtuple
 from collections.abc import MutableMapping
 from email import message_from_bytes, policy
-from email.message import Message
 from email.header import decode_header, make_header
+from email.message import Message
 
+import html2text
 from imapclient import IMAPClient
 from imapclient.exceptions import LoginError
 
 from helpers import get_logger
-
-import html2text
 
 EmailStruct = namedtuple(
     "EmailStruct", ["msgid", "from_", "subject", "body", "importance"]
@@ -67,7 +66,9 @@ class Imap:
         if msg.get_body(preferencelist=("plain")):
             return msg.get_body(preferencelist=("plain")).get_content()
         # Html version, try to convert to plain text
-        elif "html" in msg.get("content-type") and msg.get_body(preferencelist=("html")):
+        elif "html" in msg.get("content-type") and msg.get_body(
+            preferencelist=("html")
+        ):
             h = html2text.HTML2Text()
             h.ignore_links = False
             return h.handle(msg.get_body(preferencelist=("html")).get_content())
