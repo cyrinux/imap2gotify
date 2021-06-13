@@ -5,7 +5,7 @@ colorama==0.4.4
 distlib==0.3.2
 filelock==3.0.12
 html2text==2020.1.16
-idna==3.2
+idna==2.10
 IMAPClient==2.2.0
 packaging==20.9
 pluggy==0.13.1
