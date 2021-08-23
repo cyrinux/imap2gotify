@@ -15,6 +15,6 @@ requests==2.26.0
 simplejson==3.17.3
 six==1.16.0
 toml==0.10.2
-tox==3.24.1
+tox==3.24.3
 urllib3==1.26.6
 virtualenv==20.7.1
