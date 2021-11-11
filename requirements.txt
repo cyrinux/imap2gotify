@@ -7,7 +7,7 @@ filelock==3.0.12
 html2text==2020.1.16
 idna==2.10
 IMAPClient==2.2.0
-packaging==21.0
+packaging==21.2
 pluggy==0.13.1
 py==1.10.0
 pyparsing==2.4.7
