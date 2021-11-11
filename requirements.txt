@@ -9,7 +9,7 @@ idna==2.10
 IMAPClient==2.2.0
 packaging==21.0
 pluggy==0.13.1
-py==1.10.0
+py==1.11.0
 pyparsing==2.4.7
 requests==2.26.0
 simplejson==3.17.5
