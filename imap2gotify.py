@@ -33,12 +33,12 @@ class Imap2Gotify:
                 # those messages that were succefully sent via gotify are
                 # then marked as read
                 new_messages = client.get_unread()
-                (matched_messages, not_matched_messages) = rules.check_matches(
+                (matched_results, not_matched_results) = rules.check_matches(
                     new_messages
                 )
-                client.mark_as_read(not_matched_messages)
-                if matched_messages:
-                    gotify_sent_messages = gotify.send(matched_messages)
+                client.mark_as_read([r.message for r in not_matched_results])
+                if matched_results:
+                    gotify_sent_messages = gotify.send(matched_results)
                     client.mark_as_read(gotify_sent_messages)
 
                 # Go into idle waiting for new emails
