@@ -9,7 +9,7 @@ filelock==3.3.2
 html2text==2020.1.16
 idna==3.3
 IMAPClient==2.2.0
-packaging==21.2
+packaging==21.3
 platformdirs==2.4.0
 pluggy==1.0.0
 py==1.11.0
