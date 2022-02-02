@@ -5,7 +5,7 @@ chardet==4.0.0
 charset-normalizer==2.0.10
 colorama==0.4.4
 distlib==0.3.4
-filelock==3.4.0
+filelock==3.4.2
 html2text==2020.1.16
 idna==3.3
 IMAPClient==2.2.0
@@ -19,5 +19,5 @@ simplejson==3.17.6
 six==1.16.0
 toml==0.10.2
 tox==3.24.5
-urllib3==1.26.7
+urllib3==1.26.8
 virtualenv==20.12.0
