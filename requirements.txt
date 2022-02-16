@@ -5,7 +5,7 @@ chardet==4.0.0
 charset-normalizer==2.0.12
 colorama==0.4.4
 distlib==0.3.4
-filelock==3.4.2
+filelock==3.5.1
 html2text==2020.1.16
 idna==3.3
 IMAPClient==2.2.0
