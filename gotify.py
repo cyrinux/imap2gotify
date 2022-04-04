@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+from __future__ import annotations
 
 import requests
 import simplejson as json
@@ -48,7 +48,9 @@ class Gotify:
 
     def _send_to_gotify(self, message, rule):
         if rule.priority:
-            self.logger.debug("Using rule override priority: %s", rule.priority)
+            self.logger.debug(
+                "Using rule override priority: %s", rule.priority,
+            )
             priority = rule.priority
         else:
             priority = Gotify._importance_to_priority(message.importance)
@@ -65,13 +67,16 @@ class Gotify:
         else:
             extras = None
 
-        body = {"title": message.subject, "message": message.body, "priority": priority}
+        body = {
+            "title": message.subject,
+            "message": message.body, "priority": priority,
+        }
 
         if extras:
             body["extras"] = extras
 
         self.logger.debug("Gotify post message body: %s", json.dumps(body))
-        url = "{0}/message?token={1}".format(self.server, token)
+        url = f"{self.server}/message?token={token}"
         self.logger.debug("Gotify message url: %s", url)
         response = requests.post(url=url, json=body)
 

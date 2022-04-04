@@ -1,9 +1,11 @@
-# -*- coding: utf8 -*-
+from __future__ import annotations
 
 from collections import namedtuple
 from collections.abc import MutableMapping
-from email import message_from_bytes, policy
-from email.header import decode_header, make_header
+from email import message_from_bytes
+from email import policy
+from email.header import decode_header
+from email.header import make_header
 from email.message import Message
 
 import html2text
@@ -13,7 +15,7 @@ from imapclient.exceptions import LoginError
 from helpers import get_logger
 
 EmailStruct = namedtuple(
-    "EmailStruct", ["msgid", "from_", "subject", "body", "importance"]
+    "EmailStruct", ["msgid", "from_", "subject", "body", "importance"],
 )
 
 
@@ -67,7 +69,7 @@ class Imap:
             return msg.get_body(preferencelist=("plain")).get_content()
         # Html version, try to convert to plain text
         elif "html" in msg.get("content-type") and msg.get_body(
-            preferencelist=("html")
+            preferencelist=("html"),
         ):
             h = html2text.HTML2Text()
             h.ignore_links = False
@@ -84,15 +86,21 @@ class Imap:
             results = self._client.fetch(msg_ids, "RFC822")
             for msgid, raw_msg in results.items():
                 self.logger.debug("Decoding message headers and body")
-                msg = message_from_bytes(raw_msg[b"RFC822"], policy=policy.default)
+                msg = message_from_bytes(
+                    raw_msg[b"RFC822"], policy=policy.default,
+                )
                 emails.append(
                     EmailStruct(
                         msgid=msgid,
                         from_=msg.get("from"),
-                        subject=str(make_header(decode_header(msg.get("subject")))),
+                        subject=str(
+                            make_header(
+                                decode_header(msg.get("subject")),
+                            ),
+                        ),
                         body=self._get_body_from_message(msg),
                         importance=msg.get("importance"),
-                    )
+                    ),
                 )
         return emails
 
@@ -111,7 +119,9 @@ class Imap:
             self.logger.info("No unread flagged messages found")
         else:
             self.logger.info(
-                "%d unread flagged message(s) found, getting headers", len(msg_ids)
+                "%d unread flagged message(s) found, getting headers", len(
+                    msg_ids,
+                ),
             )
 
         return self._get_messages(msg_ids)
@@ -134,7 +144,7 @@ class Imap:
         self._client.idle()
         new_exist = False
         self.logger.info(
-            "Waiting idle for new messages to arrive, %d second timeout", self.timeout
+            "Waiting idle for new messages to arrive, %d second timeout", self.timeout,
         )
         while True:
             # todo add an overall breakout time check

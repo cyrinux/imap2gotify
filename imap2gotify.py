@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf8 -*-
+from __future__ import annotations
 
 import logging
 import os
@@ -34,7 +34,7 @@ class Imap2Gotify:
                 # then marked as read
                 new_messages = client.get_unread()
                 (matched_results, not_matched_results) = rules.check_matches(
-                    new_messages
+                    new_messages,
                 )
                 client.mark_as_read([r.message for r in not_matched_results])
                 if matched_results:

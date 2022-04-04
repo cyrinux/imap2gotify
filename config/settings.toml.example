@@ -13,7 +13,7 @@ folder = "INBOX"
 # Number of seconds to wait for IDLE notifications
 # Default is 5 minutes, IMAP RFC's states never more
 # than 29 minutes as a recommendation
-# timeout = 300  
+# timeout = 300
 
 
 [rules]
@@ -34,4 +34,3 @@ folder = "INBOX"
    subject = "[urlwatch]"
    priority = 3
    token = "MyOtherToken"
-
