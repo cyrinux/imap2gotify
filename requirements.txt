@@ -14,7 +14,7 @@ platformdirs==2.5.1
 pluggy==1.0.0
 py==1.11.0
 pyparsing==3.0.9
-requests==2.27.1
+requests==2.28.0
 simplejson==3.17.6
 six==1.16.0
 toml==0.10.2
