@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -14,26 +14,26 @@ repos:
     hooks:
       - id: flake8
   - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v1.5.7
+    rev: v1.6.0
     hooks:
       - id: autopep8
   - repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.6.0
+    rev: v3.0.1
     hooks:
       - id: reorder-python-imports
         args: [--py38-plus, --add-import, "from __future__ import annotations"]
         exclude: ^(\.pdbrc|\.pythonrc.py)$
   - repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.2.0
+    rev: v2.2.2
     hooks:
       - id: add-trailing-comma
         args: [--py36-plus]
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.29.0
+    rev: v2.31.1
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.910-1
+    rev: v0.942
     hooks:
       - id: mypy
