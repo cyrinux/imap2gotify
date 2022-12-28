@@ -5,7 +5,7 @@ chardet==4.0.0
 charset-normalizer~=2.0.0; python_version >= "3"
 colorama==0.4.5
 distlib==0.3.4
-filelock==3.6.0
+filelock==3.9.0
 html2text==2020.1.16
 idna==3.3
 IMAPClient==2.2.0
