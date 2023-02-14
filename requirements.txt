@@ -1,7 +1,7 @@
 appdirs==1.4.4
 backports.entry-points-selectable==1.1.1
 certifi==2022.12.7
-chardet==4.0.0
+chardet==5.1.0
 charset-normalizer~=2.0.0; python_version >= "3"
 colorama==0.4.6
 distlib==0.3.4
