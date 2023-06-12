@@ -10,7 +10,7 @@ html2text==2020.1.16
 idna==3.3
 IMAPClient==2.3.1
 packaging==21.3
-platformdirs==3.4.0
+platformdirs==3.5.3
 pluggy==1.0.0
 py==1.11.0
 pyparsing==3.0.9
