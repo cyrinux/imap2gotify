@@ -40,5 +40,5 @@ toml==0.10.2
 tomlkit==0.11.8
 tox==4.6.3
 unearth==0.9.2
-urllib3==1.26.9
+urllib3==2.0.3
 virtualenv==20.23.1
