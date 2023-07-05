@@ -1,0 +1,13 @@
+[flake8]
+exclude =
+    venv
+    .tox
+
+ignore =
+    C901
+    E
+    W503
+
+select = F
+max-complexity = 18
+max-line-length = 88
