@@ -32,7 +32,7 @@ requests-toolbelt==1.0.0
 requests==2.31.0
 resolvelib==1.0.1
 rich==13.4.2
-setuptools==65.5.0
+setuptools==65.5.1
 shellingham==1.5.0.post1
 simplejson==3.18.3
 six==1.16.0
