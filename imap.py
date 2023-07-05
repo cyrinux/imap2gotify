@@ -15,7 +15,8 @@ from imapclient.exceptions import LoginError
 from helpers import get_logger
 
 EmailStruct = namedtuple(
-    "EmailStruct", ["msgid", "from_", "subject", "body", "importance"],
+    "EmailStruct",
+    ["msgid", "from_", "subject", "body", "importance"],
 )
 
 
@@ -87,7 +88,8 @@ class Imap:
             for msgid, raw_msg in results.items():
                 self.logger.debug("Decoding message headers and body")
                 msg = message_from_bytes(
-                    raw_msg[b"RFC822"], policy=policy.default,
+                    raw_msg[b"RFC822"],
+                    policy=policy.default,
                 )
                 emails.append(
                     EmailStruct(
@@ -119,7 +121,8 @@ class Imap:
             self.logger.info("No unread flagged messages found")
         else:
             self.logger.info(
-                "%d unread flagged message(s) found, getting headers", len(
+                "%d unread flagged message(s) found, getting headers",
+                len(
                     msg_ids,
                 ),
             )
@@ -144,7 +147,8 @@ class Imap:
         self._client.idle()
         new_exist = False
         self.logger.info(
-            "Waiting idle for new messages to arrive, %d second timeout", self.timeout,
+            "Waiting idle for new messages to arrive, %d second timeout",
+            self.timeout,
         )
         while True:
             # todo add an overall breakout time check

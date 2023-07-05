@@ -7,9 +7,14 @@ from helpers import get_logger
 from imap import EmailStruct
 
 Rule = namedtuple(
-    "Rule", [
-        "name", "from_", "subject",
-        "priority", "token", "extras",
+    "Rule",
+    [
+        "name",
+        "from_",
+        "subject",
+        "priority",
+        "token",
+        "extras",
     ],
 )
 MatchResult = namedtuple("MatchResult", ["matched", "rule", "message"])
@@ -63,7 +68,9 @@ class RulesProcessor:
                 )
 
             self.logger.info(
-                "%d of %d messages matched rules", len(matches), len(messages),
+                "%d of %d messages matched rules",
+                len(matches),
+                len(messages),
             )
         return (matches, misses)
 

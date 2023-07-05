@@ -49,7 +49,8 @@ class Gotify:
     def _send_to_gotify(self, message, rule):
         if rule.priority:
             self.logger.debug(
-                "Using rule override priority: %s", rule.priority,
+                "Using rule override priority: %s",
+                rule.priority,
             )
             priority = rule.priority
         else:
@@ -69,7 +70,8 @@ class Gotify:
 
         body = {
             "title": message.subject,
-            "message": message.body, "priority": priority,
+            "message": message.body,
+            "priority": priority,
         }
 
         if extras:
