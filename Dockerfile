@@ -14,8 +14,7 @@ RUN apk update && apk add ca-certificates \
 # Run pip first for docker build caching
 COPY requirements.txt /app/requirements.txt
 WORKDIR /app
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy rest of the app
 COPY . /app
